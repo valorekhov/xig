@@ -1,0 +1,9 @@
+#Tue Dec 24 18:59:43 EST 2013
+IP=192.168.1.8
+compile_sources=true
+device=ConnectPort X2
+eclipse.preferences.version=1
+entry_point=src/xig.py
+remote_config_name=St Paul Cheese ConnectPort X2D
+remove_docstrings=true
+use_current_remote_config=true
