@@ -18,7 +18,7 @@ logger.setLevel(logging.INFO)
 
 from sessions.abstract import AbstractSession
 
-class ThingSpeakSession(AbstractSession):
+class SampleReporter(AbstractSession):
     
     def __init__(self, xig_core, jsonSample, xbee_addr):
         
