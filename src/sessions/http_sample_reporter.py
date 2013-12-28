@@ -1,5 +1,6 @@
 import httplib
 import urllib
+from messages.abstract_message import AbstractMessageFormat
 import library.xig_urlparse as urlparse
 import socket
 import logging
@@ -21,19 +22,18 @@ if sys.version_info < (2, 5):
 
 class HttpSampleReporter(AbstractSession):
     
-    def __init__(self, xig_core, xbee_addr, sensor, sample):
-        
+    def __init__(self, xig_core, xbee_addr, device, sample):
         self.__core = xig_core
         self.__write_buf = ""
         self.__read_buf = ""
         self.__xbee_addr = xbee_addr
         self.__max_buf_size = self.__core.getConfig().global_max_buf_size
 
-        self.sensor = sensor
+        self.sensor = device
         self.sample = sample
 
         # Read configuration from configuration file:
-        self.__targets = self.getTargetsFromConfig(sensor, sample)
+        self.__targets = self.getTargetsFromConfig(device, sample)
         self.__connect()
 
     def parse_url(self, url):
@@ -48,7 +48,6 @@ class HttpSampleReporter(AbstractSession):
             query = None
 
         return scheme, authority, path, query
-
 
     def concat_query_string(self, path, query, payload):
         if query is not None:
@@ -156,8 +155,12 @@ class HttpSampleReporter(AbstractSession):
         self.__write_buf = "Xig-Error: " + error_msg + "\r\n"
         #self.__multiclient.close()          # necessary?
 
+    @staticmethod
+    def get_config_section(config, sensorName):
+        return getattr(config, "httpSampleReporter_" + sensorName, None)
+
     def getTargetsFromConfig(self, sensorName, sample):
-        input_targets = getattr(self.__core.getConfig(), "httpSampleReporter_" + sensorName, None)
+        input_targets = HttpSampleReporter.get_config_section(self.__core.getConfig(), sensorName)
         targets = []
         if not isinstance(input_targets, list):
             x = input_targets
@@ -183,7 +186,13 @@ class HttpSampleReporter(AbstractSession):
 
     @staticmethod
     def handleSessionCommand(xig_core, cmd_str, xbee_addr):
+        message = AbstractMessageFormat.parse(cmd_str)
 
+        if message is not None and message.is_sample():
+            device = message.device()
+            section = HttpSampleReporter.get_config_section(xig_core.getConfig(), device)
+            if section is not None:
+                return HttpSampleReporter(xig_core, xbee_addr, device, message.sample())
         return None
 
     @staticmethod
