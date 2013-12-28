@@ -3,6 +3,9 @@ from sessions.library.json import ReadException
 __author__ = 'val orekhov'
 from sessions.library import json
 
+class MessageFormatException(Exception):
+    pass
+
 class AbstractMessageFormat(object):
     def __init__(self, device, sample, command):
         self.device_name = device
@@ -33,7 +36,7 @@ class AbstractMessageFormat(object):
             if json is not None:
                 return json
 
-        raise Exception, "Unsupported format for message: %s" % string
+        raise MessageFormatException, "Unsupported format for message: %s" % string
 
 
 class JsonMessage(AbstractMessageFormat):

@@ -1,6 +1,6 @@
 import httplib
 import urllib
-from messages.abstract_message import AbstractMessageFormat
+from messages.abstract_message import AbstractMessageFormat, MessageFormatException
 import library.xig_urlparse as urlparse
 import socket
 import logging
@@ -186,7 +186,11 @@ class HttpSampleReporter(AbstractSession):
 
     @staticmethod
     def handleSessionCommand(xig_core, cmd_str, xbee_addr):
-        message = AbstractMessageFormat.parse(cmd_str)
+        message = None
+        try:
+            message = AbstractMessageFormat.parse(cmd_str)
+        except MessageFormatException:
+            pass
 
         if message is not None and message.is_sample():
             device = message.device()
