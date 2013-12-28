@@ -65,7 +65,7 @@ logging.getLogger("cp4pc.xbee").setLevel(logging.WARNING)
 
 
 # Digi specific library module imports
-import rci
+#import rci
 
 # XIG library imports
 from library.xig_io_kernel import XigIOKernel
@@ -162,21 +162,24 @@ class Xig(object):
     def getLocalIP(self):
         if sys.platform.startswith("linux"):
             return self.__getLocalIPLinux()
-        
-        query_string = """\
-        <rci_request version="1.1">
-            <query_state><boot_stats/></query_state>
-        </rci_request>"""            
-        response = rci.process_request(query_string)
-        ip_beg, ip_end = (0, 0)
-        if sys.platform == "digix3":
-            ip_beg = response.find("<ip_address>")+1
-            ip_end = response.find("</ip_address>")
-        else:
-            ip_beg = response.find("<ip>")
-            ip_end = response.find("</ip>")
 
-        return response[ip_beg+4:ip_end].strip()
+        raise Exception("Unable to get local IP")
+
+#
+#        query_string = """\
+#        <rci_request version="1.1">
+#            <query_state><boot_stats/></query_state>
+#        </rci_request>"""
+#        response = rci.process_request(query_string)
+#        ip_beg, ip_end = (0, 0)
+#        if sys.platform == "digix3":
+#            ip_beg = response.find("<ip_address>")+1
+#            ip_end = response.find("</ip_address>")
+#        else:
+#            ip_beg = response.find("<ip>")
+#            ip_end = response.find("</ip>")
+#
+#        return response[ip_beg+4:ip_end].strip()
 
     def getShortName(self):
         return SHORTNAME
@@ -272,11 +275,11 @@ class Xig(object):
         self.__io_kernel.shutdown()
 
         # unregister rci callback
-        #TODO: move this elsewhere?
-        try:
-            rci.stop_rci_callback("xig")
-        except:
-            pass
+        ##TODO: move this elsewhere?
+        #try:
+        #    rci.stop_rci_callback("xig")
+        #except:
+        #    pass
 
         # From Digi support, to prevent the dreaded:
         # "zipimport.ZipImportError: bad local file header in WEB/python/_xig.zip" error

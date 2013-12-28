@@ -19,62 +19,22 @@ class XigConfig(object):
     #
     session_types = [
         "http",               # HTTP (fetch web pages)
-        "idigi_data",         # iDigi Data support (upload XBee data->iDigi)
-        "idigi_rci",          # iDigi RCI (send data from iDigi to an XBee)
-        #"udp",               # UDP URL destination support
-        #"io_sample",          # XBee I/O Samples to HTTP
-        #"osc",               # Send data to Open Sound Control server
+        "http_sample_reporter",       # UDP URL destination support
     ]
     
-    ## HTTP
-    
-    # No configuration options at this time.
-    
 
-    ## iDigi Data
-    idigi_data_max_rate_sec = 30    # maximum upload rate to iDigi in seconds
-    idigi_data_max_q_len = 512      # maximum number of samples to save before uploading
-    idigi_data_no_errors = False    # maximum number of samples to save before uploading
-    
-    ## iDigi RCI
-    
-    # No configuration options at this time.
+    httpSampleReporter_weather = [{
+            "_method"       : "GET",
+            "_destination"  : "http://api.thingspeak.com/update",
+            "key"           : "XXXXXXXX",
+            "field1"        : "{Temp}",
+            "field2"        : "{RH}",
+            "field3"        : "{AtmoPressure}",
+            "field4"        : "{AmbientLight}",
+            "field5"        : "{BroadbandLight}",
+            "field6"        : "{Infrared}",
+        }]
 
-
-    ## UDP URL destination support
-    
-    # No configuration options at this time
-    
-    
-    ## XBee I/O Sample HTTP Indications
-    
-    # When an I/O sample is received for an XBee address below,
-    # An HTTP GET will be called on the given URL with the
-    # following string added to the end:
-    #
-    # ?addr=[00:13:A2:00:4F:38:1B:7E]!&AD0=710&AD1=1...
-    #io_sample_destination_url = "http://xbee-data.appspot.com/io_sample"
-    # 
-    # You can also set io_sample_destination_url to a dictionary.  If you
-    # use a dictionary there must be a key-value pair with a key named
-    # "default" and a default.  The other keys may be XBee 64-bit hardware
-    # addresses in the ConnectPort format "[00:11:22:33:44:55:66:77]!"
-    # mapping to specific URLs.
-    #
-    # io_sample_destination_url = {
-    #     "default": "http://xbee-data.appspot.com/io_sample",
-    #     "[00:13:a2:00:40:30:ff:07]!": "http://my.home.com/rx_io_data",
-    #     "[00:13:a2:00:40:4a:b9:e5]!": "http//some.otherplace.com/xbee_receive",
-    # }
-
-    
-    ## Open Sound Control
-    
-    # A list of server strings of the form "server:port" for all OSC data
-    # to be send to:
-    osc_targets = [
-        # "10.1.1.1:21234
-    ]
 
     ## Global Configuration Variables
     
@@ -84,7 +44,7 @@ class XigConfig(object):
  
     # Should we send the helpfile for all unknown commands or
     # simply ignore them?
-    global_always_send_help = True
+    global_always_send_help = False
 
     # Controls how long must buffers in the system may reach before
     # they are trimmed.  This setting also happens to control the

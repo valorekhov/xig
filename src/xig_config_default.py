@@ -19,8 +19,6 @@ class XigConfig(object):
     #
     session_types = [
         "http",               # HTTP (fetch web pages)
-        "idigi_data",         # iDigi Data support (upload XBee data->iDigi)
-        "idigi_rci",          # iDigi RCI (send data from iDigi to an XBee)
         #"udp",               # UDP URL destination support
         #"io_sample",          # XBee I/O Samples to HTTP
         #"osc",               # Send data to Open Sound Control server
@@ -67,15 +65,6 @@ class XigConfig(object):
     #     "[00:13:a2:00:40:4a:b9:e5]!": "http//some.otherplace.com/xbee_receive",
     # }
 
-    
-    ## Open Sound Control
-    
-    # A list of server strings of the form "server:port" for all OSC data
-    # to be send to:
-    osc_targets = [
-        # "10.1.1.1:21234
-    ]
-
     ## Global Configuration Variables
     
     # You shouldn't need to change anything in this section unless
@@ -84,7 +73,7 @@ class XigConfig(object):
  
     # Should we send the helpfile for all unknown commands or
     # simply ignore them?
-    global_always_send_help = True
+    global_always_send_help = False
 
     # Controls how long must buffers in the system may reach before
     # they are trimmed.  This setting also happens to control the
