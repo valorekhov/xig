@@ -7,14 +7,23 @@ from common.fake_xig import FakeXigCore
 
 class TestSampleReporter(unittest.TestCase):
 
+
+    def test_null(self):
+        xig = FakeXigCore()
+        json_string = '{"__device": "weather", "__sample": {"__id":49, "Temp":null, ' \
+                      '"RH":null, "AtmoPressure":1021.98, "AmbientLight":425, "BroadbandLight":1161, "Infrared":252}}'
+        reporter = HttpSampleReporter.handleSessionCommand(xig, json_string, None)
+        pass
+
     def test_get(self):
         xig = FakeXigCore()
 
-        json_string = '{"__device": "weather", "__sample": {"__id":25, "Temp":22.20, ' \
-                    '"RH":49.40, "AtmoPressure":1027.01, "AmbientLight":97, ' \
-                    '"BroadbandLight":3839, "Infrared":637}}'
+        json_string = '{"__device": "weather", "__sample": {"__id":7, "Temp":20.40, ' \
+                      '"RH":45.00, "AtmoPressure":1021.83, "AmbientLight":564, ' \
+                      '"BroadbandLight":1575, "Infrared":361}}\n\n'
         reporter = HttpSampleReporter.handleSessionCommand(xig, json_string, None)
         pass
+
 
 if __name__ == "__main__":
     unittest.main()

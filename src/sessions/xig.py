@@ -11,7 +11,7 @@ class XigSession(AbstractSession):
     forming complete URLs will be attempted to be hangled by instances of
     this session object.
     """
-    
+        
     def __init__(self, xig_core, url, xbee_addr):
         self.__core = xig_core 
         self.__xbee_addr = xbee_addr

@@ -1,4 +1,4 @@
-import httplib
+import library.digi_httplib as httplib
 import urllib
 from messages.abstract_message import AbstractMessageFormat, MessageFormatException
 import library.xig_urlparse as urlparse
@@ -179,7 +179,9 @@ class HttpSampleReporter(AbstractSession):
                     live_field = value[1:-1]
                     if sample.has_key(live_field):
                         value = sample[live_field]
-                payload[key] = value
+
+                if value is not None:
+                    payload[key] = value
             targets.append( (method, addr, payload) )
 
         return targets
@@ -202,7 +204,7 @@ class HttpSampleReporter(AbstractSession):
     @staticmethod
     def commandHelpText():
         return """\
- send in json
+ send in simplejson
 """
 
     

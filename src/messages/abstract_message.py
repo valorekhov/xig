@@ -1,7 +1,8 @@
-from sessions.library.json import ReadException
-
 __author__ = 'val orekhov'
-from sessions.library import json
+
+import sessions.library.simplejson as json
+from sessions.library.simplejson.decoder import JSONDecodeError
+
 
 class MessageFormatException(Exception):
     pass
@@ -47,10 +48,10 @@ class JsonMessage(AbstractMessageFormat):
     def parse(string):
         data = None
         try:
-         data = json.read(string)
-        except ReadException:
+         data = json.loads(string)
+        except JSONDecodeError:
+            print "error parsing data: %s" % string
             pass
-
 
         if data is not None:
              return JsonMessage(data["__device"], data.get("__sample"), data.get("__command"))

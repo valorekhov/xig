@@ -54,7 +54,7 @@ import time
 import string
 
 # need to override socket by importing xbee.py first
-import xbee #@UnusedImport
+import xbee #@UnusedImport 
 
 # create our logger, setup log levels:
 logger = logging.getLogger("xig")
@@ -146,40 +146,7 @@ class Xig(object):
     def isXBeeXmitStatusSupported(self):
         if sys.platform == "digix3":
             return False
-
         return True
-
-    def __getLocalIPLinux(self):
-        import socket
-        try:
-            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            s.connect(("50.56.41.152", 3197))    # No connect is actually made,
-                                                 # address is my.idigi.com, EDP port
-            return s.getsockname()[0]
-        except:
-            return "127.0.0.1"
-        
-    def getLocalIP(self):
-        if sys.platform.startswith("linux"):
-            return self.__getLocalIPLinux()
-
-        raise Exception("Unable to get local IP")
-
-#
-#        query_string = """\
-#        <rci_request version="1.1">
-#            <query_state><boot_stats/></query_state>
-#        </rci_request>"""
-#        response = rci.process_request(query_string)
-#        ip_beg, ip_end = (0, 0)
-#        if sys.platform == "digix3":
-#            ip_beg = response.find("<ip_address>")+1
-#            ip_end = response.find("</ip_address>")
-#        else:
-#            ip_beg = response.find("<ip>")
-#            ip_end = response.find("</ip>")
-#
-#        return response[ip_beg+4:ip_end].strip()
 
     def getShortName(self):
         return SHORTNAME
@@ -253,7 +220,7 @@ class Xig(object):
         self.helpfile = (string.Template(HELPFILE_TEMPLATE)
                                .substitute(
                                   appName=NAME, appVersion=VERSION,
-                                  ipAddr=self.getLocalIP(),
+                                  ipAddr="127.0.0.1",
                                   sessionHelpText=sessionHelpText,
                                   autostartHelpText=autostartHelpText))
         self.helpfile = self.helpfile.replace('\n', '\r\n')
